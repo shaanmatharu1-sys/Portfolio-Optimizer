@@ -1,0 +1,87 @@
+{
+  "fund_name": "Income Fund",
+  "fund_type": "income",
+  "purpose": "Stable income and capital preservation via dividend stocks, bonds, and REITs. Minimize volatility subject to yield floor and conservative return target.",
+  "as_of_policy": "2025-12-31",
+  "data_contract": {
+    "holdings_required_columns": ["ticker", "weight", "sector", "market_cap_usd", "dividend_yield", "asset_class"],
+    "holdings_optional_columns": ["restricted", "do_not_trade"],
+    "weight_column": "weight",
+    "ticker_column": "ticker",
+    "sector_column": "sector",
+    "market_cap_column": "market_cap_usd",
+    "dividend_yield_column": "dividend_yield",
+    "asset_class_column": "asset_class"
+  },
+  "instrument_policy": {
+    "long_only": true,
+    "allow_leverage": false,
+    "allowed_asset_classes": ["Equity", "ETF", "Bond", "Cash", "REIT"],
+    "prohibited_instruments": ["Futures", "Cryptocurrency", "LeveragedETF"],
+    "restricted_tickers": []
+  },
+  "optimization": {
+    "mode": "min_vol_subject_to_constraints",
+    "return_target": {
+      "horizon": "annual",
+      "target_return": 0.08,
+      "is_hard_constraint": false,
+      "fallback_if_infeasible": {
+        "strategy": "min_vol_only",
+        "log_reason": true
+      }
+    },
+    "turnover_control": {
+      "use_turnover_penalty": true,
+      "turnover_penalty_l1": 0.22,
+      "max_one_way_turnover": 0.15,
+      "min_trade_threshold_weight": 0.002
+    }
+  },
+  "constraints": {
+    "fully_invested": true,
+    "max_single_security_weight": 0.08,
+    "min_single_security_weight": 0.0,
+    "sector_caps": {
+      "enabled": true,
+      "max_sector_weight": 0.25
+    },
+    "asset_class_bands": {
+      "enabled": true,
+      "bands": {
+        "Equity": { "min": 0.20, "max": 0.50 },
+        "Bond": { "min": 0.30, "max": 0.70 },
+        "Cash": { "min": 0.00, "max": 0.15 },
+        "REIT": { "min": 0.00, "max": 0.20 }
+      }
+    },
+    "income_constraints": {
+      "enabled": true,
+      "min_portfolio_dividend_yield": 0.03,
+      "max_weight_in_zero_yield_assets": 0.10,
+      "yield_source": "csv_dividend_yield"
+    },
+    "market_cap_constraints": {
+      "enabled": false
+    },
+    "do_not_trade_rules": {
+      "enabled": true,
+      "column": "do_not_trade"
+    }
+  },
+  "risk_model": {
+    "lookback_trading_days": 504,
+    "returns_type": "log",
+    "covariance_estimator": "sample_shrinkage",
+    "shrinkage_alpha": 0.20,
+    "ensure_psd": true,
+    "risk_free_rate_annual": 0.02
+  },
+  "reporting": {
+    "require_compliance_report": true,
+    "require_trade_list": true,
+    "require_risk_contribution": true,
+    "require_explainability_notes": true,
+    "require_income_breakdown_report": true
+  }
+}

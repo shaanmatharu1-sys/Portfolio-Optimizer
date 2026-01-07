@@ -1,0 +1,4 @@
+check,limit,observed,status
+max_single_security_weight,0.1,0.10000407735110914,FAIL
+max_sector_weight,0.35,0.2897546572214165,PASS
+return_target_configured,0.2,,INFO

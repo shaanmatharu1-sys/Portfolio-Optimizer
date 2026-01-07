@@ -1,0 +1,82 @@
+{
+  "fund_name": "Small-Cap Fund",
+  "fund_type": "smallcap",
+  "purpose": "High growth opportunities in small-cap equities (policy market cap range $300M–$2B). Higher volatility tolerated, but minimize volatility subject to target return and size mandate.",
+  "as_of_policy": "2025-12-31",
+  "data_contract": {
+    "holdings_required_columns": ["ticker", "weight", "sector", "market_cap_usd", "dividend_yield"],
+    "holdings_optional_columns": ["asset_class", "restricted", "do_not_trade"],
+    "weight_column": "weight",
+    "ticker_column": "ticker",
+    "sector_column": "sector",
+    "market_cap_column": "market_cap_usd",
+    "dividend_yield_column": "dividend_yield",
+    "asset_class_column": "asset_class"
+  },
+"instrument_policy": {
+  "long_only": true,
+  "allowed_asset_classes": ["Equity", "ETF", "Bond"]
+},
+  "optimization": {
+    "mode": "min_vol_subject_to_return",
+    "return_target": {
+      "horizon": "annual",
+      "target_return": 0.22,
+      "is_hard_constraint": true,
+      "fallback_if_infeasible": {
+        "strategy": "maximize_return_then_min_vol",
+        "log_reason": true
+      }
+    },
+    "turnover_control": {
+      "use_turnover_penalty": true,
+      "turnover_penalty_l1": 0.12,
+      "max_one_way_turnover": 0.30,
+      "min_trade_threshold_weight": 0.003
+    }
+  },
+  "constraints": {
+    "fully_invested": true,
+    "max_single_security_weight": 0.08,
+    "min_single_security_weight": 0.0,
+    "sector_caps": {
+      "enabled": true,
+      "max_sector_weight": 0.30
+    },
+    "market_cap_constraints": {
+      "enabled": true,
+      "policy_band_usd": {
+        "min": 300000000,
+        "max": 2000000000
+      },
+      "enforcement": {
+        "method": "weighted_avg_log_market_cap",
+        "cap_limit_usd": 2000000000,
+        "allow_drift_bucket_weight": 0.10,
+        "hard_exclude_above_cap": false
+      }
+    },
+    "income_constraints": {
+      "enabled": false
+    },
+    "do_not_trade_rules": {
+      "enabled": true,
+      "column": "do_not_trade"
+    }
+  },
+  "risk_model": {
+    "lookback_trading_days": 504,
+    "returns_type": "log",
+    "covariance_estimator": "sample_shrinkage",
+    "shrinkage_alpha": 0.20,
+    "ensure_psd": true,
+    "risk_free_rate_annual": 0.02
+  },
+  "reporting": {
+    "require_compliance_report": true,
+    "require_trade_list": true,
+    "require_risk_contribution": true,
+    "require_explainability_notes": true,
+    "require_market_cap_exposure_report": true
+  }
+}

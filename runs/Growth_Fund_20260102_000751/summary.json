@@ -1,0 +1,30 @@
+{
+  "run_id": "Growth_Fund_20260102_000751",
+  "fund_name": "Growth Fund",
+  "status": "optimal",
+  "objective_value": 0.0268895582758929,
+  "diagnostics": {
+    "achieved_return": 0.20998724194025023,
+    "one_way_turnover": 0.010240519415082694
+  },
+  "stats_current": {
+    "exp_return": 0.21080233488046307,
+    "vol": 0.16143078510023118,
+    "sharpe": 1.1819451584900322,
+    "dividend_yield": 0.007166666666666667,
+    "wavg_market_cap_usd": 1072160596226.2915
+  },
+  "stats_target": {
+    "exp_return": 0.20998724194025023,
+    "vol": 0.160827568014553,
+    "sharpe": 1.1813101714194834,
+    "dividend_yield": 0.007207446665461522,
+    "wavg_market_cap_usd": 1062481878550.1887,
+    "one_way_turnover": 0.010240519415082694
+  },
+  "validation_warnings": [
+    "Sum of weights is 0.780000, which is outside the acceptable range (0.95, 1.05). Normalizing weights."
+  ],
+  "start_date": "2023-01-01",
+  "end_date": "2025-01-01"
+}
