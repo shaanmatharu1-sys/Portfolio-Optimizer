@@ -33,17 +33,164 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS
+# Custom CSS - Force white background and modern UI
 st.markdown("""
     <style>
-    .metric-card {
-        background-color: #f0f2f6;
-        padding: 20px;
-        border-radius: 10px;
-        margin: 10px 0;
+    /* Force white background universally */
+    .stApp {
+        background-color: #FFFFFF !important;
     }
-    .positive { color: #28a745; font-weight: bold; }
-    .negative { color: #dc3545; font-weight: bold; }
+    
+    [data-testid="stAppViewContainer"] {
+        background-color: #FFFFFF !important;
+    }
+    
+    [data-testid="stHeader"] {
+        background-color: #FFFFFF !important;
+    }
+    
+    [data-testid="stSidebar"] {
+        background-color: #F8F9FA !important;
+    }
+    
+    /* Modern card design */
+    .metric-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 24px;
+        border-radius: 12px;
+        margin: 12px 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Enhanced metrics */
+    [data-testid="stMetricValue"] {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1a1a1a;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        font-size: 14px;
+        font-weight: 600;
+        color: #4a4a4a;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Positive/Negative indicators */
+    .positive { 
+        color: #10b981; 
+        font-weight: 700;
+        font-size: 16px;
+    }
+    .negative { 
+        color: #ef4444; 
+        font-weight: 700;
+        font-size: 16px;
+    }
+    
+    /* Improved buttons */
+    .stButton > button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    
+    /* Modern tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background-color: #F8F9FA;
+        padding: 8px;
+        border-radius: 10px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        height: 50px;
+        background-color: transparent;
+        border-radius: 8px;
+        padding: 0px 24px;
+        font-weight: 600;
+        color: #4a4a4a;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    
+    /* Enhanced dataframes */
+    [data-testid="stDataFrame"] {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    
+    /* Section headers */
+    h1 {
+        color: #1a1a1a;
+        font-weight: 800;
+        padding-bottom: 10px;
+        border-bottom: 3px solid #667eea;
+    }
+    
+    h2 {
+        color: #2d3748;
+        font-weight: 700;
+        margin-top: 24px;
+    }
+    
+    h3 {
+        color: #4a5568;
+        font-weight: 600;
+    }
+    
+    /* File uploader styling */
+    [data-testid="stFileUploader"] {
+        background-color: #F8F9FA;
+        border-radius: 10px;
+        padding: 20px;
+        border: 2px dashed #cbd5e0;
+    }
+    
+    /* Input fields */
+    .stTextInput > div > div > input,
+    .stNumberInput > div > div > input {
+        border-radius: 8px;
+        border: 2px solid #e2e8f0;
+        padding: 10px;
+    }
+    
+    .stTextInput > div > div > input:focus,
+    .stNumberInput > div > div > input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    /* Expander styling */
+    .streamlit-expanderHeader {
+        background-color: #F8F9FA;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+    
+    /* Success/Warning/Error boxes */
+    .stSuccess, .stWarning, .stError, .stInfo {
+        border-radius: 10px;
+        padding: 16px;
+        border-left: 4px solid;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -102,12 +249,21 @@ def create_default_config():
 
 
 def main():
-    st.title("📊 Portfolio Optimizer")
-    st.markdown("Advanced portfolio optimization with multiple objectives and constraints")
+    # Hero Section
+    st.markdown("""
+        <div style='text-align: center; padding: 30px 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                    border-radius: 15px; margin-bottom: 30px; color: white;'>
+            <h1 style='font-size: 48px; margin: 0; border: none; color: white;'>📊 Portfolio Optimizer</h1>
+            <p style='font-size: 18px; margin-top: 10px; color: rgba(255,255,255,0.9);'>
+                Advanced portfolio optimization with AI-powered analytics
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
     
     # Sidebar configuration
     with st.sidebar:
-        st.header("⚙️ Configuration")
+        st.markdown("### ⚙️ Configuration")
+        st.markdown("---")
         
         # Date range
         col1, col2 = st.columns(2)
