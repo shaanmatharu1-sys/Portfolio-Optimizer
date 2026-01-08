@@ -130,7 +130,8 @@ class DynamicCovarianceMatrix:
         weights = self.decay_factor ** np.arange(T)[::-1]
         weights /= weights.sum()
         
-        corr_matrix = np.corrcoef(Z.T, ddof=0)
+        # Remove ddof parameter - np.corrcoef doesn't accept it
+        corr_matrix = np.corrcoef(Z.T)
         corr_matrix = np.nan_to_num(corr_matrix)
         corr_matrix = 0.5 * (corr_matrix + np.eye(self.n_assets))  # Shrink to diagonal
         
