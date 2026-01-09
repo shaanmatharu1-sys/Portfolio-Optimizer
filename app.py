@@ -41,7 +41,7 @@ st.markdown("""
         --primary-navy: #0A2540;
         --secondary-navy: #1A3A5C;
         --accent-gold: #D4AF37;
-        --text-primary: #1A1A1A;
+        --text-primary: #2D3748;
         --text-secondary: #4A5568;
         --background-white: #FFFFFF;
         --background-light: #F7FAFC;
@@ -67,11 +67,6 @@ st.markdown("""
     [data-testid="stSidebar"] {
         background-color: var(--background-light) !important;
         border-right: 1px solid var(--border-color);
-    }
-    
-    /* Fix all text to be visible */
-    * {
-        color: var(--text-primary) !important;
     }
     
     /* Professional typography */
@@ -379,10 +374,12 @@ def main():
     st.markdown("""
         <div style='text-align: center; padding: 48px 0 32px 0; background-color: #0A2540; 
                     border-bottom: 3px solid #D4AF37; margin-bottom: 40px;'>
-            <h1 style='font-size: 42px; margin: 0; border: none; color: #FFFFFF !important; font-weight: 700; letter-spacing: -0.5px;'>
+            <h1 style='font-size: 42px; margin: 0; border: none !important; color: #FFFFFF !important; 
+                       font-weight: 700; letter-spacing: -0.5px; padding-bottom: 0 !important;'>
                 ML Powered Portfolio Optimizer
             </h1>
-            <p style='font-size: 16px; margin-top: 12px; color: #E2E8F0 !important; font-weight: 400; letter-spacing: 0.3px;'>
+            <p style='font-size: 16px; margin-top: 12px; color: #E2E8F0 !important; font-weight: 400; 
+                      letter-spacing: 0.3px;'>
                 Institutional-Grade Portfolio Analytics & Risk Management
             </p>
         </div>
