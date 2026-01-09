@@ -1,0 +1,28 @@
+[theme]
+# Professional Investment Bank Theme
+# Navy, Gold, and White color scheme
+
+# Primary color (used for interactive elements, highlights)
+primaryColor = "#D4AF37"  # Gold accent
+
+# Background color for the main content area
+backgroundColor = "#FFFFFF"  # Clean white
+
+# Background color for sidebar and most interactive widgets
+secondaryBackgroundColor = "#F7FAFC"  # Light gray
+
+# Color used for most text
+textColor = "#2D3748"  # Dark gray
+
+# Font family
+font = "sans serif"
+
+[server]
+# Development settings
+headless = true
+enableCORS = false
+port = 8501
+
+[browser]
+# Browser settings
+gatherUsageStats = false
