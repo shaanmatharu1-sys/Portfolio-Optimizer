@@ -53,47 +53,71 @@ st.markdown("""
         background-color: #F8F9FA !important;
     }
     
+    /* Mobile-specific text visibility fixes */
+    * {
+        color: #1a1a1a !important;
+    }
+    
+    p, span, div, label, li {
+        color: #1a1a1a !important;
+    }
+    
+    /* Ensure all text elements are visible */
+    [data-testid="stMarkdownContainer"] p,
+    [data-testid="stMarkdownContainer"] span,
+    [data-testid="stText"] {
+        color: #1a1a1a !important;
+    }
+    
     /* Modern card design */
     .metric-card {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
+        color: white !important;
         padding: 24px;
         border-radius: 12px;
         margin: 12px 0;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     
+    .metric-card * {
+        color: white !important;
+    }
+    
     /* Enhanced metrics */
     [data-testid="stMetricValue"] {
-        font-size: 28px;
-        font-weight: 700;
-        color: #1a1a1a;
+        font-size: 28px !important;
+        font-weight: 700 !important;
+        color: #1a1a1a !important;
     }
     
     [data-testid="stMetricLabel"] {
-        font-size: 14px;
-        font-weight: 600;
-        color: #4a4a4a;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        color: #4a4a4a !important;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
     
+    [data-testid="stMetricDelta"] {
+        color: #1a1a1a !important;
+    }
+    
     /* Positive/Negative indicators */
     .positive { 
-        color: #10b981; 
+        color: #10b981 !important; 
         font-weight: 700;
         font-size: 16px;
     }
     .negative { 
-        color: #ef4444; 
+        color: #ef4444 !important; 
         font-weight: 700;
         font-size: 16px;
     }
     
     /* Improved buttons */
     .stButton > button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
         border: none;
         padding: 12px 28px;
         border-radius: 8px;
@@ -122,12 +146,16 @@ st.markdown("""
         border-radius: 8px;
         padding: 0px 24px;
         font-weight: 600;
-        color: #4a4a4a;
+        color: #4a4a4a !important;
     }
     
     .stTabs [aria-selected="true"] {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
+        color: white !important;
+    }
+    
+    .stTabs [aria-selected="true"] * {
+        color: white !important;
     }
     
     /* Enhanced dataframes */
@@ -139,20 +167,20 @@ st.markdown("""
     
     /* Section headers */
     h1 {
-        color: #1a1a1a;
+        color: #1a1a1a !important;
         font-weight: 800;
         padding-bottom: 10px;
         border-bottom: 3px solid #667eea;
     }
     
     h2 {
-        color: #2d3748;
+        color: #2d3748 !important;
         font-weight: 700;
         margin-top: 24px;
     }
     
     h3 {
-        color: #4a5568;
+        color: #4a5568 !important;
         font-weight: 600;
     }
     
@@ -164,12 +192,18 @@ st.markdown("""
         border: 2px dashed #cbd5e0;
     }
     
+    [data-testid="stFileUploader"] * {
+        color: #1a1a1a !important;
+    }
+    
     /* Input fields */
     .stTextInput > div > div > input,
     .stNumberInput > div > div > input {
         border-radius: 8px;
         border: 2px solid #e2e8f0;
         padding: 10px;
+        color: #1a1a1a !important;
+        background-color: white !important;
     }
     
     .stTextInput > div > div > input:focus,
@@ -178,11 +212,21 @@ st.markdown("""
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
     
+    /* Labels for inputs */
+    .stTextInput label,
+    .stNumberInput label,
+    .stSelectbox label,
+    .stRadio label {
+        color: #1a1a1a !important;
+        font-weight: 600;
+    }
+    
     /* Expander styling */
     .streamlit-expanderHeader {
         background-color: #F8F9FA;
         border-radius: 8px;
         font-weight: 600;
+        color: #1a1a1a !important;
     }
     
     /* Success/Warning/Error boxes */
@@ -190,6 +234,40 @@ st.markdown("""
         border-radius: 10px;
         padding: 16px;
         border-left: 4px solid;
+    }
+    
+    .stSuccess *, .stWarning *, .stError *, .stInfo * {
+        color: #1a1a1a !important;
+    }
+    
+    /* Mobile responsive adjustments */
+    @media (max-width: 768px) {
+        /* Ensure all text is visible on mobile */
+        body, p, span, div, h1, h2, h3, h4, h5, h6, label, li, td, th {
+            color: #1a1a1a !important;
+        }
+        
+        /* Larger tap targets for mobile */
+        .stButton > button {
+            padding: 16px 32px !important;
+            font-size: 18px !important;
+        }
+        
+        /* Adjust metrics for mobile */
+        [data-testid="stMetricValue"] {
+            font-size: 24px !important;
+        }
+        
+        /* Better spacing on mobile */
+        .stTabs [data-baseweb="tab"] {
+            padding: 0px 12px !important;
+            font-size: 14px !important;
+        }
+        
+        /* Hero section mobile adjustment */
+        h1 {
+            font-size: 32px !important;
+        }
     }
     </style>
     """, unsafe_allow_html=True)
