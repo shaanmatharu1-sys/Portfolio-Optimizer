@@ -115,17 +115,35 @@ class FactorModel:
         return pd.DataFrame(factors_dict)
     
     def fit(self):
-        """Fit factor model to returns using cross-sectional regression."""
+        """Fit factor model to returns using robust regression with regularization."""
         # Align data
         common_index = self.returns.index.intersection(self.factors.index)
         X = self.factors.loc[common_index].values  # (T x n_factors)
         Y = self.returns.loc[common_index].values  # (T x n_assets)
         
-        # Add intercept for alpha
-        X_with_const = np.column_stack([np.ones(len(X)), X])
+        # Handle NaN/inf values
+        X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)
+        Y = np.nan_to_num(Y, nan=0.0, posinf=0.0, neginf=0.0)
         
-        # Fit: Y = X_with_const @ beta (betas are columns)
-        self.betas_with_alpha = np.linalg.lstsq(X_with_const, Y, rcond=None)[0]
+        # Add small regularization to avoid singular matrix
+        X_standardized = (X - X.mean(axis=0)) / (X.std(axis=0) + 1e-8)
+        
+        # Add intercept for alpha
+        X_with_const = np.column_stack([np.ones(len(X_standardized)), X_standardized])
+        
+        # Robust fit using Ridge-like approach
+        # Use np.linalg.solve with regularization instead of lstsq for stability
+        try:
+            # Add ridge penalty to diagonal for numerical stability
+            XTX = X_with_const.T @ X_with_const
+            ridge_penalty = 1e-6 * np.eye(XTX.shape[0])
+            ridge_penalty[0, 0] = 0  # Don't penalize intercept
+            XTX_reg = XTX + ridge_penalty
+            XTY = X_with_const.T @ Y
+            self.betas_with_alpha = np.linalg.solve(XTX_reg, XTY)
+        except np.linalg.LinAlgError:
+            # Fallback to pseudo-inverse if solve fails
+            self.betas_with_alpha = np.linalg.pinv(X_with_const) @ Y
         
         self.alphas = self.betas_with_alpha[0, :].copy()  # Intercepts
         self.betas = self.betas_with_alpha[1:, :].copy()  # Factor loadings
@@ -133,10 +151,10 @@ class FactorModel:
         # Residuals
         Y_fitted = X_with_const @ self.betas_with_alpha
         self.residuals = Y - Y_fitted
-        self.residual_vol = np.std(self.residuals, axis=0)
+        self.residual_vol = np.std(self.residuals, axis=0) + 1e-8  # Add small epsilon
         
         # Factor volatility
-        self.factor_vols = np.std(X, axis=0)
+        self.factor_vols = np.std(X, axis=0) + 1e-8  # Add small epsilon
     
     def decompose_risk(self, weights: np.ndarray) -> pd.DataFrame:
         """

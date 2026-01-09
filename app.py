@@ -771,8 +771,8 @@ def main():
         return
     
     # Display results tabs
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
-        ["📈 Summary", "🎯 Recommendations", "📊 Analysis", "⚠️ Stress Tests", "📉 Factor Attribution", "🔮 ML Predictions", "📋 Backtest"]
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
+        ["📈 Summary", "🎯 Recommendations", "📊 Analysis", "⚠️ Stress Tests", "📉 Factor Attribution", "🔮 ML Predictions"]
     )
     
     with tab1:
@@ -1084,91 +1084,6 @@ def main():
             
         except Exception as e:
             st.warning(f"Projection not available: {str(e)[:100]}")
-    
-    with tab7:
-        st.subheader("📋 Backtest: Historical Forecast Accuracy")
-        st.caption("How well did past return predictions match actual market performance?")
-        
-        try:
-            # Backtest: compare predicted returns vs actual returns for held assets
-            backtest_periods = []
-            
-            for ticker in validated_df['ticker']:
-                try:
-                    # Get historical data for this ticker
-                    ticker_obj = yf.Ticker(ticker)
-                    hist = ticker_obj.history(period="2y")
-                    
-                    if len(hist) < 252:
-                        continue
-                    
-                    # Split into train (1y) and test (1y)
-                    train_end = len(hist) // 2
-                    train_data = hist.iloc[:train_end]
-                    test_data = hist.iloc[train_end:]
-                    
-                    # Calculate returns
-                    train_returns = train_data['Close'].pct_change().dropna()
-                    test_returns = test_data['Close'].pct_change().dropna()
-                    
-                    predicted_return = train_returns.mean() * 252 * 100
-                    actual_return = test_returns.mean() * 252 * 100
-                    
-                    backtest_periods.append({
-                        'Ticker': ticker,
-                        'Predicted Return (%)': predicted_return,
-                        'Actual Return (%)': actual_return,
-                        'Error (%)': actual_return - predicted_return,
-                        'Accuracy': 100 - abs(actual_return - predicted_return)
-                    })
-                except:
-                    pass
-            
-            if backtest_periods:
-                backtest_df = pd.DataFrame(backtest_periods)
-                backtest_df = backtest_df.sort_values('Accuracy', ascending=False)
-                
-                st.dataframe(backtest_df, use_container_width=True)
-                
-                # Summary metrics
-                col1, col2, col3 = st.columns(3)
-                
-                with col1:
-                    mean_accuracy = backtest_df['Accuracy'].mean()
-                    st.metric("Average Accuracy", f"{mean_accuracy:.1f}%")
-                
-                with col2:
-                    mean_error = backtest_df['Error (%)'].abs().mean()
-                    st.metric("Mean Absolute Error", f"{mean_error:.2f}%")
-                
-                with col3:
-                    positive_bias = (backtest_df['Error (%)'] > 0).sum() / len(backtest_df) * 100
-                    st.metric("Positive Bias %", f"{positive_bias:.1f}%")
-                
-                # Chart
-                fig_backtest = px.scatter(
-                    backtest_df,
-                    x='Predicted Return (%)',
-                    y='Actual Return (%)',
-                    color='Accuracy',
-                    size='Accuracy',
-                    hover_data=['Ticker', 'Error (%)'],
-                    title='Predicted vs Actual Returns (1Y Backtest)',
-                    trendline='ols',
-                    color_continuous_scale='RdYlGn'
-                )
-                
-                st.plotly_chart(fig_backtest, use_container_width=True)
-                
-                st.info(
-                    "**Interpretation:** Points near the diagonal line indicate accurate predictions. "
-                    "Above the line = conservative estimates. Below the line = optimistic estimates."
-                )
-            else:
-                st.warning("Not enough historical data for backtest analysis")
-            
-        except Exception as e:
-            st.warning(f"Backtest not available: {str(e)[:100]}")
     
     # Footer
     st.divider()
