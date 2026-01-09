@@ -69,8 +69,13 @@ st.markdown("""
         border-right: 1px solid var(--border-color);
     }
     
+    /* Fix all text to be visible */
+    * {
+        color: var(--text-primary) !important;
+    }
+    
     /* Professional typography */
-    body, p, span, div, label, li {
+    body, p, span, div, label, li, td, th {
         color: var(--text-primary) !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
@@ -159,8 +164,8 @@ st.markdown("""
     /* Section headers - Executive style */
     h1 {
         color: var(--primary-navy) !important;
-        font-weight: 700;
-        font-size: 36px;
+        font-weight: 700 !important;
+        font-size: 36px !important;
         letter-spacing: -0.5px;
         padding-bottom: 16px;
         border-bottom: 2px solid var(--accent-gold);
@@ -169,17 +174,21 @@ st.markdown("""
     
     h2 {
         color: var(--primary-navy) !important;
-        font-weight: 600;
-        font-size: 24px;
+        font-weight: 600 !important;
+        font-size: 24px !important;
         margin-top: 32px;
         margin-bottom: 16px;
     }
     
     h3 {
         color: var(--text-primary) !important;
-        font-weight: 600;
-        font-size: 18px;
+        font-weight: 600 !important;
+        font-size: 18px !important;
         margin-top: 24px;
+    }
+    
+    h4, h5, h6 {
+        color: var(--text-primary) !important;
     }
     
     /* File uploader - Professional styling */
@@ -188,6 +197,10 @@ st.markdown("""
         border-radius: 4px;
         padding: 24px;
         border: 2px dashed var(--border-color);
+    }
+    
+    [data-testid="stFileUploader"] * {
+        color: var(--text-primary) !important;
     }
     
     /* Input fields - Clean and minimal */
@@ -213,8 +226,9 @@ st.markdown("""
     .stTextInput label,
     .stNumberInput label,
     .stSelectbox label,
-    .stRadio label {
-        color: var(--text-secondary) !important;
+    .stRadio label,
+    .stCheckbox label {
+        color: var(--text-primary) !important;
         font-weight: 600;
         font-size: 12px;
         text-transform: uppercase;
@@ -242,6 +256,10 @@ st.markdown("""
         border-left-color: var(--success-green);
     }
     
+    .stSuccess *, .stWarning *, .stError *, .stInfo * {
+        color: var(--text-primary) !important;
+    }
+    
     .stError, .stWarning {
         border-left-color: var(--warning-red);
     }
@@ -255,6 +273,12 @@ st.markdown("""
     [data-testid="stSidebar"] h2,
     [data-testid="stSidebar"] h3 {
         color: var(--primary-navy) !important;
+    }
+    
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] span {
+        color: var(--text-primary) !important;
     }
     
     /* Professional divider */
@@ -282,6 +306,16 @@ st.markdown("""
     .js-plotly-plot {
         border-radius: 4px;
         border: 1px solid var(--border-color);
+    }
+    
+    /* Caption text */
+    .stCaption {
+        color: var(--text-secondary) !important;
+    }
+    
+    /* Markdown text */
+    [data-testid="stMarkdown"] p {
+        color: var(--text-primary) !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -345,10 +379,10 @@ def main():
     st.markdown("""
         <div style='text-align: center; padding: 48px 0 32px 0; background-color: #0A2540; 
                     border-bottom: 3px solid #D4AF37; margin-bottom: 40px;'>
-            <h1 style='font-size: 42px; margin: 0; border: none; color: #FFFFFF; font-weight: 700; letter-spacing: -0.5px;'>
-                Portfolio Optimization Platform
+            <h1 style='font-size: 42px; margin: 0; border: none; color: #FFFFFF !important; font-weight: 700; letter-spacing: -0.5px;'>
+                ML Powered Portfolio Optimizer
             </h1>
-            <p style='font-size: 16px; margin-top: 12px; color: #E2E8F0; font-weight: 400; letter-spacing: 0.3px;'>
+            <p style='font-size: 16px; margin-top: 12px; color: #E2E8F0 !important; font-weight: 400; letter-spacing: 0.3px;'>
                 Institutional-Grade Portfolio Analytics & Risk Management
             </p>
         </div>
