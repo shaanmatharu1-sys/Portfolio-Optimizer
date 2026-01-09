@@ -33,171 +33,255 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS - Force white background and black text for visibility
+# Custom CSS - Professional Investment Bank Design
 st.markdown("""
     <style>
-    /* Force white background universally */
+    /* Professional color scheme - Navy, Gold, White */
+    :root {
+        --primary-navy: #0A2540;
+        --secondary-navy: #1A3A5C;
+        --accent-gold: #D4AF37;
+        --text-primary: #1A1A1A;
+        --text-secondary: #4A5568;
+        --background-white: #FFFFFF;
+        --background-light: #F7FAFC;
+        --border-color: #E2E8F0;
+        --success-green: #0E7C3E;
+        --warning-red: #C53030;
+    }
+    
+    /* Force clean white background */
     .stApp {
-        background-color: #FFFFFF !important;
+        background-color: var(--background-white) !important;
     }
     
     [data-testid="stAppViewContainer"] {
-        background-color: #FFFFFF !important;
+        background-color: var(--background-white) !important;
     }
     
     [data-testid="stHeader"] {
-        background-color: #FFFFFF !important;
+        background-color: var(--background-white) !important;
+        border-bottom: 1px solid var(--border-color);
     }
     
     [data-testid="stSidebar"] {
-        background-color: #F8F9FA !important;
+        background-color: var(--background-light) !important;
+        border-right: 1px solid var(--border-color);
     }
     
-    /* Force black text for visibility */
-    body, p, span, div, h1, h2, h3, h4, h5, h6, label, li, td, th, a {
-        color: #000000 !important;
+    /* Professional typography */
+    body, p, span, div, label, li {
+        color: var(--text-primary) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
     
-    /* Modern card design */
-    .metric-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white !important;
-        padding: 24px;
-        border-radius: 12px;
-        margin: 12px 0;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    /* Enhanced metrics */
+    /* Enhanced metrics - Investment grade */
     [data-testid="stMetricValue"] {
-        font-size: 28px;
-        font-weight: 700;
-        color: #000000 !important;
+        font-size: 32px !important;
+        font-weight: 600 !important;
+        color: var(--primary-navy) !important;
+        font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
     }
     
     [data-testid="stMetricLabel"] {
-        font-size: 14px;
-        font-weight: 600;
-        color: #000000 !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        color: var(--text-secondary) !important;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 1px;
     }
     
-    /* Positive/Negative indicators */
+    /* Positive/Negative indicators - Institutional colors */
     .positive { 
-        color: #10b981 !important; 
-        font-weight: 700;
-        font-size: 16px;
+        color: var(--success-green) !important; 
+        font-weight: 600;
     }
     .negative { 
-        color: #ef4444 !important; 
-        font-weight: 700;
-        font-size: 16px;
+        color: var(--warning-red) !important; 
+        font-weight: 600;
     }
     
-    /* Improved buttons */
+    /* Professional buttons - Navy with gold hover */
     .stButton > button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-color: var(--primary-navy) !important;
         color: white !important;
-        border: none;
-        padding: 12px 28px;
-        border-radius: 8px;
+        border: 1px solid var(--primary-navy) !important;
+        padding: 12px 32px;
+        border-radius: 4px;
         font-weight: 600;
-        font-size: 16px;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
     
     .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        background-color: var(--secondary-navy) !important;
+        border-color: var(--accent-gold) !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     }
     
-    /* Modern tabs */
+    /* Professional tabs - Clean lines */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        background-color: #F8F9FA;
-        padding: 8px;
-        border-radius: 10px;
+        gap: 0px;
+        background-color: transparent;
+        border-bottom: 2px solid var(--border-color);
     }
     
     .stTabs [data-baseweb="tab"] {
-        height: 50px;
+        height: 48px;
         background-color: transparent;
-        border-radius: 8px;
-        padding: 0px 24px;
+        border-radius: 0px;
+        padding: 0px 28px;
         font-weight: 600;
-        color: #000000 !important;
+        font-size: 13px;
+        color: var(--text-secondary) !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 3px solid transparent;
     }
     
     .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white !important;
+        background-color: transparent !important;
+        color: var(--primary-navy) !important;
+        border-bottom: 3px solid var(--accent-gold) !important;
     }
     
-    /* Enhanced dataframes */
+    /* Enhanced dataframes - Professional table styling */
     [data-testid="stDataFrame"] {
-        border-radius: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
         overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        font-size: 13px;
     }
     
-    /* Section headers */
+    /* Section headers - Executive style */
     h1 {
-        color: #000000 !important;
-        font-weight: 800;
-        padding-bottom: 10px;
-        border-bottom: 3px solid #667eea;
+        color: var(--primary-navy) !important;
+        font-weight: 700;
+        font-size: 36px;
+        letter-spacing: -0.5px;
+        padding-bottom: 16px;
+        border-bottom: 2px solid var(--accent-gold);
+        margin-bottom: 24px;
     }
     
     h2 {
-        color: #000000 !important;
-        font-weight: 700;
-        margin-top: 24px;
+        color: var(--primary-navy) !important;
+        font-weight: 600;
+        font-size: 24px;
+        margin-top: 32px;
+        margin-bottom: 16px;
     }
     
     h3 {
-        color: #000000 !important;
+        color: var(--text-primary) !important;
         font-weight: 600;
+        font-size: 18px;
+        margin-top: 24px;
     }
     
-    /* File uploader styling */
+    /* File uploader - Professional styling */
     [data-testid="stFileUploader"] {
-        background-color: #F8F9FA;
-        border-radius: 10px;
-        padding: 20px;
-        border: 2px dashed #cbd5e0;
+        background-color: var(--background-light);
+        border-radius: 4px;
+        padding: 24px;
+        border: 2px dashed var(--border-color);
     }
     
-    /* Input fields */
+    /* Input fields - Clean and minimal */
     .stTextInput > div > div > input,
-    .stNumberInput > div > div > input {
-        border-radius: 8px;
-        border: 2px solid #e2e8f0;
-        padding: 10px;
-        color: #000000 !important;
+    .stNumberInput > div > div > input,
+    .stSelectbox > div > div {
+        border-radius: 4px;
+        border: 1px solid var(--border-color);
+        padding: 10px 12px;
+        color: var(--text-primary) !important;
         background-color: white !important;
+        font-size: 14px;
     }
     
     .stTextInput > div > div > input:focus,
     .stNumberInput > div > div > input:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        border-color: var(--primary-navy);
+        box-shadow: 0 0 0 3px rgba(10, 37, 64, 0.1);
+        outline: none;
     }
     
-    /* Expander styling */
-    .streamlit-expanderHeader {
-        background-color: #F8F9FA;
-        border-radius: 8px;
+    /* Labels - Professional */
+    .stTextInput label,
+    .stNumberInput label,
+    .stSelectbox label,
+    .stRadio label {
+        color: var(--text-secondary) !important;
         font-weight: 600;
-        color: #000000 !important;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
     
-    /* Success/Warning/Error boxes */
+    /* Expander - Subtle and clean */
+    .streamlit-expanderHeader {
+        background-color: var(--background-light);
+        border-radius: 4px;
+        font-weight: 600;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border-color);
+    }
+    
+    /* Alert boxes - Professional styling */
     .stSuccess, .stWarning, .stError, .stInfo {
-        border-radius: 10px;
-        padding: 16px;
+        border-radius: 4px;
+        padding: 16px 20px;
         border-left: 4px solid;
+        background-color: var(--background-light);
+    }
+    
+    .stSuccess {
+        border-left-color: var(--success-green);
+    }
+    
+    .stError, .stWarning {
+        border-left-color: var(--warning-red);
+    }
+    
+    .stInfo {
+        border-left-color: var(--primary-navy);
+    }
+    
+    /* Sidebar refinements */
+    [data-testid="stSidebar"] h1,
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3 {
+        color: var(--primary-navy) !important;
+    }
+    
+    /* Professional divider */
+    hr {
+        border: none;
+        border-top: 1px solid var(--border-color);
+        margin: 24px 0;
+    }
+    
+    /* Radio buttons and checkboxes */
+    .stRadio > label,
+    .stCheckbox > label {
+        color: var(--text-primary) !important;
+        font-weight: 500;
+    }
+    
+    /* Date input styling */
+    .stDateInput > div > div > input {
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary) !important;
+    }
+    
+    /* Plotly charts - Professional theme */
+    .js-plotly-plot {
+        border-radius: 4px;
+        border: 1px solid var(--border-color);
     }
     </style>
     """, unsafe_allow_html=True)
@@ -257,13 +341,15 @@ def create_default_config():
 
 
 def main():
-    # Hero Section
+    # Professional Header
     st.markdown("""
-        <div style='text-align: center; padding: 30px 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                    border-radius: 15px; margin-bottom: 30px; color: white;'>
-            <h1 style='font-size: 48px; margin: 0; border: none; color: white;'>📊 Portfolio Optimizer</h1>
-            <p style='font-size: 18px; margin-top: 10px; color: rgba(255,255,255,0.9);'>
-                Advanced portfolio optimization with AI-powered analytics
+        <div style='text-align: center; padding: 48px 0 32px 0; background-color: #0A2540; 
+                    border-bottom: 3px solid #D4AF37; margin-bottom: 40px;'>
+            <h1 style='font-size: 42px; margin: 0; border: none; color: #FFFFFF; font-weight: 700; letter-spacing: -0.5px;'>
+                Portfolio Optimization Platform
+            </h1>
+            <p style='font-size: 16px; margin-top: 12px; color: #E2E8F0; font-weight: 400; letter-spacing: 0.3px;'>
+                Institutional-Grade Portfolio Analytics & Risk Management
             </p>
         </div>
     """, unsafe_allow_html=True)
