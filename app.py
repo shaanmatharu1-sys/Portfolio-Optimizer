@@ -659,6 +659,110 @@ def main():
         with col3:
             if use_transaction_costs:
                 st.metric("Transaction Cost", f"{cost_impact:.1f} bps")
+        
+        st.divider()
+        
+        # Portfolio Return Chart
+        st.subheader("📈 Historical Portfolio Performance")
+        
+        try:
+            # Calculate portfolio returns over time
+            portfolio_returns_current = returns_filtered.dot(current_weights)
+            portfolio_returns_target = returns_filtered.dot(target_weights)
+            
+            # Calculate cumulative returns (wealth index starting at $100)
+            wealth_current = (1 + portfolio_returns_current).cumprod() * 100
+            wealth_target = (1 + portfolio_returns_target).cumprod() * 100
+            
+            # Create the chart
+            import plotly.graph_objects as go
+            
+            fig = go.Figure()
+            
+            fig.add_trace(go.Scatter(
+                x=wealth_current.index,
+                y=wealth_current.values,
+                mode='lines',
+                name='Current Portfolio',
+                line=dict(color='#2D3748', width=2),
+                hovertemplate='%{y:,.2f}<extra></extra>'
+            ))
+            
+            fig.add_trace(go.Scatter(
+                x=wealth_target.index,
+                y=wealth_target.values,
+                mode='lines',
+                name='Target Portfolio',
+                line=dict(color='#D4AF37', width=2),
+                hovertemplate='%{y:,.2f}<extra></extra>'
+            ))
+            
+            fig.update_layout(
+                title='Portfolio Value ($100 Initial Investment)',
+                xaxis_title='Date',
+                yaxis_title='Portfolio Value ($)',
+                hovermode='x unified',
+                template='plotly_white',
+                height=400,
+                showlegend=True,
+                legend=dict(
+                    yanchor="top",
+                    y=0.99,
+                    xanchor="left",
+                    x=0.01
+                )
+            )
+            
+            st.plotly_chart(fig, use_container_width=True)
+            
+            # Add performance statistics
+            col1, col2, col3, col4 = st.columns(4)
+            
+            total_return_current = (wealth_current.iloc[-1] / 100 - 1) * 100
+            total_return_target = (wealth_target.iloc[-1] / 100 - 1) * 100
+            
+            # Calculate annualized returns
+            years = len(portfolio_returns_current) / 252
+            ann_return_current = ((wealth_current.iloc[-1] / 100) ** (1/years) - 1) * 100
+            ann_return_target = ((wealth_target.iloc[-1] / 100) ** (1/years) - 1) * 100
+            
+            # Calculate max drawdown
+            def max_drawdown(returns):
+                wealth = (1 + returns).cumprod()
+                running_max = wealth.expanding().max()
+                drawdown = (wealth - running_max) / running_max
+                return drawdown.min() * 100
+            
+            mdd_current = max_drawdown(portfolio_returns_current)
+            mdd_target = max_drawdown(portfolio_returns_target)
+            
+            with col1:
+                st.metric("Total Return (Current)", f"{total_return_current:.2f}%")
+            with col2:
+                st.metric("Total Return (Target)", f"{total_return_target:.2f}%", 
+                         delta=f"{total_return_target - total_return_current:+.2f}%")
+            with col3:
+                st.metric("Annualized Return (Current)", f"{ann_return_current:.2f}%")
+            with col4:
+                st.metric("Annualized Return (Target)", f"{ann_return_target:.2f}%",
+                         delta=f"{ann_return_target - ann_return_current:+.2f}%")
+            
+            col1, col2, col3, col4 = st.columns(4)
+            with col1:
+                st.metric("Max Drawdown (Current)", f"{mdd_current:.2f}%")
+            with col2:
+                st.metric("Max Drawdown (Target)", f"{mdd_target:.2f}%")
+            with col3:
+                # Calculate Calmar ratio (annual return / max drawdown)
+                calmar_current = ann_return_current / abs(mdd_current) if mdd_current != 0 else 0
+                st.metric("Calmar Ratio (Current)", f"{calmar_current:.2f}")
+            with col4:
+                calmar_target = ann_return_target / abs(mdd_target) if mdd_target != 0 else 0
+                st.metric("Calmar Ratio (Target)", f"{calmar_target:.2f}",
+                         delta=f"{calmar_target - calmar_current:+.2f}")
+            
+        except Exception as e:
+            st.error(f"Unable to generate portfolio performance chart: {str(e)}")
     
     with tab2:
         st.subheader("Portfolio Rebalancing")
